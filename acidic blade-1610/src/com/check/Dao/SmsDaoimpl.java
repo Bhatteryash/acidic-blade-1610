@@ -12,6 +12,7 @@ import com.beanclass.Course;
 import com.beanclass.Student;
 import com.connection.Server;
 import com.exception.Incorrectvalues;
+import com.mysql.cj.xdevapi.Result;
 
 public class SmsDaoimpl implements SMSDao {
 
@@ -35,8 +36,26 @@ public class SmsDaoimpl implements SMSDao {
 		}
 	}
 
+	public List<Integer> avail_student(){
+		List<Integer> list=new ArrayList<>();
+		
+		try(Connection conn=Server.provideConnection()){
+			
+			PreparedStatement ps= conn.prepareStatement("Select sid from student where bid is null");
+			ResultSet rs= ps.executeQuery();
+			while(rs.next()) {
+				list.add(rs.getInt("sid"));
+			}
+		}
+		catch(SQLException e) {
+			
+		}
+		
+		return list;
+	}
+	
 	@Override
-	public String AddCourse(int id, String name, int fee) {
+    public String AddCourse(int id, String name, int fee) {
 
 		String message = "Not inserted....";
 
@@ -311,10 +330,10 @@ public class SmsDaoimpl implements SMSDao {
 			int x = ps.executeUpdate();
 
 			if (x > 0) {
-				message = "1 line inserted";
+				message = "Student added...!";
 			}
 		} catch (SQLException e) {
-			message = e.getMessage();
+			message = "Name already Exist";
 		}
 
 		return message;
