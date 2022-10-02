@@ -21,7 +21,7 @@ public interface SMSDao {
 	
 	public String CreateBatch(Batch batch);
 	
-	public String AllocateBatch(int sid);
+	public String AllocateBatch(int sid,int bid);
 	
 	public String UpdateSeats(int bid,int newseats);
 	
@@ -31,5 +31,7 @@ public interface SMSDao {
 //	Student methods
 	public String AddStudent(Student stu);
 	
-	public String updateStudent(int sid);
+	public String updateStudent(int sid,String change,int choice);
+	
+	public List<Course> seeAllCourse();
 }

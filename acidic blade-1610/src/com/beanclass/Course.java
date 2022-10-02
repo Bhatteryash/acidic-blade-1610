@@ -5,6 +5,26 @@ public class Course {
 	private int Cid;
 	private String name;
 	private int fee;
+	private int seats;
+	
+	public Course(int cid,String name) {
+		Cid = cid;
+		this.name = name;
+	}
+	
+	public Course(int cid, String name, int fee, int seats) {
+		super();
+		Cid = cid;
+		this.name = name;
+		this.fee = fee;
+		this.seats = seats;
+	}
+	public int getSeats() {
+		return seats;
+	}
+	public void setSeats(int seats) {
+		this.seats = seats;
+	}
 	public int getCid() {
 		return Cid;
 	}

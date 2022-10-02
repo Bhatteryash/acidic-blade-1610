@@ -6,6 +6,12 @@ public class Batch {
 	private int CourseId;
 	private int Seats;
 	private String slot;
+	
+	public Batch(int batchid,int courseid) {
+		BatchId = batchid;
+		CourseId = courseid;
+	}
+	
 	public Batch(int batchId, int courseId, int seats, String slot) {
 		super();
 		BatchId = batchId;

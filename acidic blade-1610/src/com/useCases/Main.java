@@ -33,6 +33,13 @@ public class Main {
 			SMSDao sd = new SmsDaoimpl();
 			switch (choice) {
 			case 1: {
+				List<Course> list= new SmsDaoimpl().showCourses();
+				System.out.println("Available Courses");
+				list.forEach(s->{
+					System.out.println(s.getCid()+"-"+s.getName());
+				});
+				System.out.println("=================================");
+				
 				System.out.println("Enter course Id");
 				int id = sc.nextInt();
 
@@ -47,7 +54,13 @@ public class Main {
 			}
 				break;
 			case 2: {
-
+				List<Course> list= new SmsDaoimpl().showCourses();
+				System.out.println("Available Courses");
+				list.forEach(s->{
+					System.out.println(s.getCid()+"-"+s.getName());
+				});
+				System.out.println("=================================");
+				
 				System.out.println("Enter course Id");
 				int id = sc.nextInt();
 
@@ -60,6 +73,13 @@ public class Main {
 			}
 				break;
 			case 3: {
+				List<Course> list= new SmsDaoimpl().showCourses();
+				System.out.println("Available Courses");
+				list.forEach(s->{
+					System.out.println(s.getCid()+"-"+s.getName());
+				});
+				System.out.println("=================================");
+				
 				System.out.println("Enter course Id you want to delete");
 				int id = sc.nextInt();
 
@@ -68,6 +88,13 @@ public class Main {
 			}
 				break;
 			case 4: {
+				List<Course> list= new SmsDaoimpl().showCourses();
+				System.out.println("Available Courses");
+				list.forEach(s->{
+					System.out.println(s.getCid()+"-"+s.getName());
+				});
+				System.out.println("=================================");
+				
 				System.out.println("Enter course Id");
 				int cid = sc.nextInt();
 				Course c1 = sd.searchcourse(cid);
@@ -81,6 +108,19 @@ public class Main {
 			}
 				break;
 			case 5: {
+				List<Batch> blist=new SmsDaoimpl().showBatch();
+				System.out.println("Available Batches");
+				blist.forEach(s->{
+					System.out.println("Batch Id:-"+s.getBatchId()+"- CourseId:-"+s.getCourseId());
+				});
+				System.out.println("=================================");
+				List<Course> list= new SmsDaoimpl().showCourses();
+				System.out.println("Available Courses");
+				list.forEach(s->{
+					System.out.println(s.getCid()+"-"+s.getName());
+				});
+				System.out.println("=================================");
+				
 				System.out.println("Enter Batch Id");
 				int bid = sc.nextInt();
 
@@ -100,13 +140,33 @@ public class Main {
 			case 6: {
 				System.out.println("Enter Student Id");
 				int sid=sc.nextInt();
+				SmsDaoimpl nsd=new SmsDaoimpl();
+				List<Integer> blist= nsd.findBatches(sid);
 				
-				String message= sd.AllocateBatch(sid);
+				if(blist.size()==0) {
+					System.out.println("No batch for this Course ");
+					break;
+				}
+				System.out.println("Batches Available: ");
+				blist.forEach(s->{
+					System.out.print(s+" ");
+				});
+				System.out.println();
+				System.out.println("Select a Batch:-");
+				int bid=sc.nextInt();
+				
+				String message= sd.AllocateBatch(sid,bid);
 				System.out.println(message);
 			}
 				break;
 
 			case 7: {
+				List<Batch> blist=new SmsDaoimpl().showBatch();
+				System.out.println("Available Batches");
+				blist.forEach(s->{
+					System.out.println("Batch Id:-"+s.getBatchId()+"- CourseId:-"+s.getCourseId());
+				});
+				System.out.println("=================================");
 				System.out.println("Enter batch id");
 				int bid=sc.nextInt();
 				
@@ -118,10 +178,24 @@ public class Main {
 			}
 				break;
 			case 8: {
+				List<Batch> blist=new SmsDaoimpl().showBatch();
+				System.out.println("Available Batches");
+				blist.forEach(s->{
+					System.out.println("Batch Id:-"+s.getBatchId()+"- CourseId:-"+s.getCourseId());
+				});
+				System.out.println("=================================");
+				
+				
 				System.out.println("Enter batch Id");
 				int bid=sc.nextInt();
 				
 				List<Student> li= sd.ViewStudent(bid);
+				
+				if(li.size()==0) {
+					System.out.println("No Student In this course");
+					break;
+				}
+				
 				for(int i=0;i<li.size();i++) {
 					Student s=li.get(i);
 					System.out.println("Student Details: "+(i+1));
@@ -172,17 +246,61 @@ public class Main {
 			}
 				break;
 			case 2: {
+				System.out.println("Enter username: ");
+				String username=sc.next();
 				
-				
-				
+				System.out.println("Enter password: ");
+				String password=sc.next();
+				SmsDaoimpl nsd=new SmsDaoimpl();
+				int sid= nsd.checkStudent(username, password);
+				if(sid==0) {
+					System.out.println("Wrong username or password");
+					break;
+				}
+				System.out.println("----------Welcome----------");
+				System.out.println("Do you want to change:- ");
+				System.out.println("1.Name");
+				System.out.println("2.Username");
+				System.out.println("3.password");
+				int choose=sc.nextInt();
+				String message="";
+				if(choose==1) {
+					System.out.println("Enter name");
+					String name=sc.next();
+					message=sd.updateStudent(sid,name,1);
+				}else if(choice==2) {
+					System.out.println("Enter Username");
+					String user=sc.next();
+					message=sd.updateStudent(sid,user,2);
+				}else if(choice==3){
+					System.out.println("Enter Password");
+					String pass=sc.next();
+					message=sd.updateStudent(sid,pass,3);
+				}else {
+					message="Invalid choice";
+				}
+				System.out.println(message);
 			}
 				break;
 			case 3: {
-
+				
+				List<Course> lc =sd.seeAllCourse();
+				
+				for(int i=0;i<lc.size();i++) {
+					Course c=lc.get(i);
+					System.out.println("Course list:- "+(i+1));
+					System.out.println("--------------------------");
+					System.out.println("Course id :"+c.getCid());
+					System.out.println("Course Name: "+c.getName());
+					System.out.println("Course fee: "+c.getFee());
+					System.out.println("Course Seats: "+c.getSeats());
+					System.out.println("--------------------------");
+				}
 			}
 				break;
 			default: {
-
+				System.out.println("Thank you...!");
+				return;
 			}
 			}
 
@@ -193,7 +311,9 @@ public class Main {
 	public static void main(String[] args) {
 
 		while (true) {
+			System.out.println("----------------------------------------------");
 			System.out.println("Welcome to Automated Student management System");
+			System.out.println("----------------------------------------------");
 			System.out.println("Login as ");
 			System.out.println("1.Admin");
 			System.out.println("2.Student");
